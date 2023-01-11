@@ -13,7 +13,7 @@ function date_to_timestamp(my_date) {
 
 function timestamp_to_date(my_tf) {
     my_date = new Date(my_tf);
-    str_date = `${my_date.getUTCDate()}-${my_date.getUTCMonth()+1}-${my_date.getUTCFullYear()} ${my_date.getUTCHours()}:${my_date.getUTCMinutes()}`
+    str_date = `${my_date.getUTCDate()}-${my_date.getUTCMonth()+1}-${my_date.getUTCFullYear()}{my_date.getUTCHours()}:${my_date.getUTCMinutes()}`
     return str_date;
 }
 
@@ -84,10 +84,10 @@ async function get_ohlcv(exchange, pair_name, timeframe, since_date, limit, tf_m
         setTimeout(_ => resolve(), millis);
     });
     while (current_request < total_request) {
-        process.stdout.write(`\rLoading ${current_request}/${total_request} requests | ${result_ohlcv.length} candles loaded`);
+        process.stdout.write(`\rLoading{current_request}/${total_request} requests |{result_ohlcv.length} candles loaded`);
         await delay(2000);
     }
-    process.stdout.write(`\rLoading ${current_request}/${total_request} requests | ${result_ohlcv.length} candles loaded`);
+    process.stdout.write(`\rLoading{current_request}/${total_request} requests |{result_ohlcv.length} candles loaded`);
     result_ohlcv = result_ohlcv.sort(function(a, b) {
         return a[0] - b[0];
     });
@@ -108,7 +108,7 @@ async function get_ohlcv(exchange, pair_name, timeframe, since_date, limit, tf_m
 
     csvWriter.writeRecords(result_ohlcv) // returns a promise
         .then(() => {
-            process.stdout.write(`\rSuccessfully downloaded ${result_ohlcv.length} candles since ${first_date} in ${filepath}`);
+            process.stdout.write(`\rSuccessfully downloaded{result_ohlcv.length} candles since{first_date} in{filepath}`);
             return true;
         }).catch(err => {
             console.log(err);
@@ -132,15 +132,19 @@ async function get_multi_ohlcv(exchange, pair_list, tf_list, start_date, exchang
 }
 
 
-// --- Edit exchange here ---
+// Edit exchange here
 let exchange = new ccxt.binance({ enableRateLimit: true })
 
-// --- Edit coin list here ---
-pair_list = ["BTC/USDT", "ETH/USDT", 'ADA/USDT', 'XRP/USDT', 'BNB/USDT', 'LINK/USDT', 'LTC/USDT', "DOGE/USDT", "SOL/USDT", "AVAX/USDT", "DOT/USDT", "LUNA/USDT", "MATIC/USDT", "NEAR/USDT", "EGLD/USDT", "XTZ/USDT", "AAVE/USDT", "UNI/USDT", "FTM/USDT", "BCH/USDT"]
+// Edit coin list here
+pair_list = ["BTC/USDT", "ETH/USDT", 'ADA/USDT', 'XRP/USDT', 'BNB/USDT', 'LINK/USDT', 'LTC/USDT', "DOGE/USDT", 
+"SOL/USDT", "AVAX/USDT", "DOT/USDT", "LUNA/USDT", "MATIC/USDT", "NEAR/USDT", "EGLD/USDT", "XTZ/USDT", "AAVE/USDT", 
+"UNI/USDT", "FTM/USDT", "BCH/USDT"]
 // pair_list = coin_list['ftx_main_list']
 
-// --- Edit timeframe list and start date here ---
-timeframe_list = ['1h']
+// Edit timeframe list and start date here
+timeframe_list = ['1h', '2h','4h','1d']
+//timeframe_list = ['1h']
+//timeframe_list = ['15m']
 start_date = "01-06-2017"
 
 

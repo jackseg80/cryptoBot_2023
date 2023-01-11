@@ -45,23 +45,23 @@ def basic_single_asset_backtest(trades, days):
     worst_trade_date1 =  str(df_trades.loc[df_trades['trade_result_pct'] == worst_trade].iloc[0]['open_date'])
     worst_trade_date2 =  str(df_trades.loc[df_trades['trade_result_pct'] == worst_trade].iloc[0]['close_date'])
     
-    print("Period: [{}] -> [{}]".format(df_days.iloc[0]["day"], df_days.iloc[-1]["day"]))
-    print("Initial wallet: {} $".format(round(initial_wallet,2)))
+    print("Période: [{}] -> [{}]".format(df_days.iloc[0]["day"], df_days.iloc[-1]["day"]))
+    print("Portefeuille initial: {}".format(round(initial_wallet,2)))
     
-    print("\n--- General Information ---")
-    print("Final wallet: {} $".format(round(final_wallet,2)))
+    print("\n--- Informations Générales")
+    print("Portefeuille final: {}".format(round(final_wallet,2)))
     print("Performance vs US dollar: {} %".format(round(vs_usd_pct*100,2)))
     print("Sharpe Ratio: {}".format(round(sharpe_ratio,2)))
-    print("Worst Drawdown T|D: -{}% | -{}%".format(round(max_trades_drawdown*100, 2), round(max_days_drawdown*100, 2)))
+    print("Pire Drawdown T|D: -{}% | -{}%".format(round(max_trades_drawdown*100, 2), round(max_days_drawdown*100, 2)))
     print("Buy and hold performance: {} %".format(round(buy_and_hold_pct*100,2)))
     print("Performance vs buy and hold: {} %".format(round(vs_hold_pct*100,2)))
-    print("Total trades on the period: {}".format(total_trades))
+    print("Nombre total de trades sur la période: {}".format(total_trades))
     print("Global Win rate: {} %".format(round(global_win_rate*100, 2)))
-    print("Average Profit: {} %".format(round(avg_profit*100, 2)))
-    print("Total fees paid {}$".format(round(total_fees, 2)))
+    print("Profit moyen: {} %".format(round(avg_profit*100, 2)))
+    print("Total des frais: {}$".format(round(total_fees, 2)))
     
-    print("\nBest trades: +{} % the {} -> {}".format(round(best_trade*100, 2), best_trade_date1, best_trade_date2))
-    print("Worst trades: {} % the {} -> {}".format(round(worst_trade*100, 2), worst_trade_date1, worst_trade_date2))
+    print("\nMeilleures trades: +{} % the {} -> {}".format(round(best_trade*100, 2), best_trade_date1, best_trade_date2))
+    print("Pires trades: {} % the {} -> {}".format(round(worst_trade*100, 2), worst_trade_date1, worst_trade_date2))
 
     return df_trades, df_days
 
@@ -104,11 +104,11 @@ def basic_multi_asset_backtest(trades, days):
     sharpe_ratio = (365**0.5)*(df_days['daily_return'].mean()/df_days['daily_return'].std())
     
     print("Period: [{}] -> [{}]".format(df_days.iloc[0]["day"], df_days.iloc[-1]["day"]))
-    print("Initial wallet: {} $".format(round(initial_wallet,2)))
+    print("Initial wallet: {}".format(round(initial_wallet,2)))
     print("Trades on {} pairs".format(total_pair_traded))
     
-    print("\n--- General Information ---")
-    print("Final wallet: {} $".format(round(final_wallet,2)))
+    print("\n--- General Information")
+    print("Final wallet: {}".format(round(final_wallet,2)))
     print("Performance vs US dollar: {} %".format(round(vs_usd_pct*100,2)))
     print("Sharpe Ratio: {}".format(round(sharpe_ratio,2)))
     print("Worst Drawdown T|D: -{}% | -{}%".format(round(max_trades_drawdown*100, 2), round(max_days_drawdown*100, 2)))
@@ -118,7 +118,7 @@ def basic_multi_asset_backtest(trades, days):
     print("Global Win rate: {} %".format(round(global_win_rate*100, 2)))
     print("Average Profit: {} %".format(round(avg_profit*100, 2)))
     
-    print("\n----- Pair Result -----")
+    print("\n----- Pair Result--")
     print('-' * 95)
     print('{:<6s}{:>10s}{:>15s}{:>15s}{:>15s}{:>15s}{:>15s}'.format(
                 "Trades","Pair","Sum-result","Mean-trade","Worst-trade","Best-trade","Win-rate"
@@ -154,40 +154,40 @@ def plot_wallet_vs_asset(df_days, log=False):
     # print("-- Plotting equity vs asset and drawdown --")
     fig, ax_left = plt.subplots(figsize=(15, 20), nrows=4, ncols=1)
 
-    ax_left[0].title.set_text("Strategy equity curve")
+    ax_left[0].title.set_text("Courbe de capital stratégique")
     ax_left[0].plot(days['wallet'], color='royalblue', lw=1)
     if log:
         ax_left[0].set_yscale('log')
     ax_left[0].fill_between(days['wallet'].index, days['wallet'], alpha=0.2, color='royalblue')
     ax_left[0].axhline(y=days.iloc[0]['wallet'], color='black', alpha=0.3)
-    ax_left[0].legend(['Wallet evolution (equity)'], loc ="upper left")
+    ax_left[0].legend(['Evolution du portefeuille (capital)'], loc ="upper left")
 
-    ax_left[1].title.set_text("Base currency evolution")
+    ax_left[1].title.set_text("Evolution de la devise de base ")
     ax_left[1].plot(days['price'], color='sandybrown', lw=1)
     if log:
         ax_left[1].set_yscale('log')
     ax_left[1].fill_between(days['price'].index, days['price'], alpha=0.2, color='sandybrown')
     ax_left[1].axhline(y=days.iloc[0]['price'], color='black', alpha=0.3)
-    ax_left[1].legend(['Asset evolution'], loc ="upper left")
+    ax_left[1].legend(['Evolution de l''actif'], loc ="upper left")
 
-    ax_left[2].title.set_text("Drawdown curve")
+    ax_left[2].title.set_text("Courbe du drawdown")
     ax_left[2].plot(-days['drawdown_pct']*100, color='indianred', lw=1)
     ax_left[2].fill_between(days['drawdown_pct'].index, -days['drawdown_pct']*100, alpha=0.2, color='indianred')
     ax_left[2].axhline(y=0, color='black', alpha=0.3)
-    ax_left[2].legend(['Drawdown in %'], loc ="lower left")
+    ax_left[2].legend(['Drawdown en %'], loc ="lower left")
 
     ax_right = ax_left[3].twinx()
     if log:
         ax_left[3].set_yscale('log')
         ax_right.set_yscale('log')
 
-    ax_left[3].title.set_text("Wallet VS Asset (not on the same scale)")
+    ax_left[3].title.set_text("Portefeuille VS Actif (pas à la même échelle)")
     ax_left[3].set_yticks([])
     ax_right.set_yticks([])
     ax_left[3].plot(days['wallet'], color='royalblue', lw=1)
     ax_right.plot(days['price'], color='sandybrown', lw=1)
-    ax_left[3].legend(['Wallet evolution (equity)'], loc ="lower right")
-    ax_right.legend(['Asset evolution'], loc ="upper left")
+    ax_left[3].legend(['Evolution du portefeuille (capital)'], loc ="lower right")
+    ax_right.legend(['Evolution de l''actif'], loc ="upper left")
 
     plt.show()
     
@@ -261,7 +261,7 @@ def plot_bar_by_month(df_days):
             g.set(xlabel=current_year, ylabel='performance %')
             
             year_result = (df_days.loc[str(current_year)]['wallet'].iloc[-1] - df_days.loc[str(current_year)]['wallet'].iloc[0]) / df_days.loc[str(current_year)]['wallet'].iloc[0]
-            print("----- " + str(current_year) +" Cumulative Performances: " + str(round(year_result*100,2)) + "% -----")
+            print("----- " + str(current_year) +" Cumulative Performances: " + str(round(year_result*100,2)) + "%--")
             plt.show()
 
             current_year_array = []
