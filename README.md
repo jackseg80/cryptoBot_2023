@@ -6,7 +6,7 @@ Prérequis: Python, Node, Git
 
 Mise en place du projet:
 >git clone https://github.com/jackseg80/crytoBot_2023.git
-> cd backtest_tools
+>cd backtest_tools
 
 Mise en place de l'environnement virtuel (très recommandé):
 >python -m venv .venv  
