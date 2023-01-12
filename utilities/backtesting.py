@@ -65,6 +65,7 @@ def basic_single_asset_backtest(trades, days):
 
     return df_trades, df_days
 
+
 def basic_multi_asset_backtest(trades, days):
     df_trades = trades.copy()
     df_days = days.copy()
@@ -139,6 +140,7 @@ def basic_multi_asset_backtest(trades, days):
     
     return df_trades, df_days
 
+
 def plot_sharpe_evolution(df_days):
     df_days_copy = df_days.copy()
     df_days_copy['evolution'] = df_days_copy['wallet'].diff()
@@ -148,6 +150,7 @@ def plot_sharpe_evolution(df_days):
     df_days_copy['std'] = df_days_copy['daily_return'].rolling(365).std()
     df_days_copy['sharpe'] = (365**0.5)*(df_days_copy['mean']/df_days_copy['std'])
     df_days_copy['sharpe'].plot(figsize=(18, 9))
+
 
 def plot_wallet_vs_asset(df_days, log=False):
     days = df_days.copy()
@@ -168,7 +171,7 @@ def plot_wallet_vs_asset(df_days, log=False):
         ax_left[1].set_yscale('log')
     ax_left[1].fill_between(days['price'].index, days['price'], alpha=0.2, color='sandybrown')
     ax_left[1].axhline(y=days.iloc[0]['price'], color='black', alpha=0.3)
-    ax_left[1].legend(['Evolution de l''actif'], loc ="upper left")
+    ax_left[1].legend(["Evolution de l'actif"], loc ="upper left")
 
     ax_left[2].title.set_text("Courbe du drawdown")
     ax_left[2].plot(-days['drawdown_pct']*100, color='indianred', lw=1)
@@ -186,10 +189,11 @@ def plot_wallet_vs_asset(df_days, log=False):
     ax_right.set_yticks([])
     ax_left[3].plot(days['wallet'], color='royalblue', lw=1)
     ax_right.plot(days['price'], color='sandybrown', lw=1)
-    ax_left[3].legend(['Evolution du portefeuille (capital)'], loc ="lower right")
-    ax_right.legend(['Evolution de l''actif'], loc ="upper left")
+    ax_left[3].legend(['Evolution du portefeuille (capital)'], loc ="upper left")
+    ax_right.legend(["Evolution de l'actif"], bbox_to_anchor=(0, 0.9), loc ="upper left")
 
     plt.show()
+ 
     
 def get_metrics(df_trades, df_days):
     df_days_copy = df_days.copy()
@@ -218,11 +222,13 @@ def get_metrics(df_trades, df_days):
         "max_drawdown": max_drawdown
     }
     
+    
 def get_n_columns(df, columns, n=1):
     dt = df.copy()
     for col in columns:
         dt["n"+str(n)+"_"+col] = dt[col].shift(n)
     return dt
+
 
 def plot_bar_by_month(df_days):
     sns.set(rc={'figure.figsize':(11.7,8.27)})
