@@ -2,7 +2,7 @@
 node_modules/
 
 # Database
-database/
+# database/
 download_data.js
 update_data.js
 !database/coin_list.json
