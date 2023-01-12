@@ -48,20 +48,20 @@ def basic_single_asset_backtest(trades, days):
     print("Période: [{}] -> [{}]".format(df_days.iloc[0]["day"], df_days.iloc[-1]["day"]))
     print("Portefeuille initial: {}".format(round(initial_wallet,2)))
     
-    print("\n--- Informations Générales")
+    print("\n--- Informations Générales ---")
     print("Portefeuille final: {}".format(round(final_wallet,2)))
     print("Performance vs US dollar: {} %".format(round(vs_usd_pct*100,2)))
-    print("Sharpe Ratio: {}".format(round(sharpe_ratio,2)))
     print("Pire Drawdown T|D: -{}% | -{}%".format(round(max_trades_drawdown*100, 2), round(max_days_drawdown*100, 2)))
     print("Buy and hold performance: {} %".format(round(buy_and_hold_pct*100,2)))
     print("Performance vs buy and hold: {} %".format(round(vs_hold_pct*100,2)))
     print("Nombre total de trades sur la période: {}".format(total_trades))
+    print("Sharpe Ratio: {}".format(round(sharpe_ratio,2)))
     print("Global Win rate: {} %".format(round(global_win_rate*100, 2)))
     print("Profit moyen: {} %".format(round(avg_profit*100, 2)))
     print("Total des frais: {}$".format(round(total_fees, 2)))
     
-    print("\nMeilleures trades: +{} % the {} -> {}".format(round(best_trade*100, 2), best_trade_date1, best_trade_date2))
-    print("Pires trades: {} % the {} -> {}".format(round(worst_trade*100, 2), worst_trade_date1, worst_trade_date2))
+    print("\033[92m\nMeilleur trade: +{} % le {} -> {}\033[0m".format(round(best_trade*100, 2), best_trade_date1, best_trade_date2))
+    print("\033[91mPire trade: {} % le {} -> {}\033[0m".format(round(worst_trade*100, 2), worst_trade_date1, worst_trade_date2))
 
     return df_trades, df_days
 
