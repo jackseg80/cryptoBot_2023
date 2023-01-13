@@ -14,7 +14,7 @@ pygame.display.set_caption("Brick Breaker")
 
 # Set the parameters of the ball
 ball_radius = 30
-ball_size = [ball_radius*2, ball_radius*2]
+ball_size = [60, 40]
 ball_color = (255, 255, 255)
 ball_pos = [350, 250]
 ball_vel = [3, 3]
@@ -156,7 +156,7 @@ while not done:
     # Update the size of the ball
     time_since_last_bounce += clock.get_time()  # add the time passed since last frame
     if time_since_last_bounce >= 150:  # if it's been more than 500ms since last bounce
-        ball_size = [60, 60]  # make the ball smaller again
+        ball_size = [60, 40]  # make the ball smaller again
     ball_image = pygame.transform.scale(ball_image, ball_size)
     
     # Draw the ball
