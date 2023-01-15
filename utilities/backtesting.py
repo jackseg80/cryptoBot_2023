@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import datetime
+from IPython.display import display
 
 def basic_single_asset_backtest(trades, days):
     df_trades = trades.copy()
@@ -45,24 +46,22 @@ def basic_single_asset_backtest(trades, days):
     worst_trade_date1 =  str(df_trades.loc[df_trades['trade_result_pct'] == worst_trade].iloc[0]['open_date'])
     worst_trade_date2 =  str(df_trades.loc[df_trades['trade_result_pct'] == worst_trade].iloc[0]['close_date'])
     
-    print("Période: [{}] -> [{}]".format(df_days.iloc[0]["day"], df_days.iloc[-1]["day"]))
-    print("Portefeuille initial: {}".format(round(initial_wallet,2)))
-    
+    print("Période:".ljust(30), "[{}] -> [{}]".format(df_days.iloc[0]["day"], df_days.iloc[-1]["day"]))
+    print("Portefeuille initial:".ljust(30), "{:,.2f} $".format(initial_wallet))
     print("\n--- Informations Générales ---")
-    print("Portefeuille final: {}".format(round(final_wallet,2)))
-    print("Performance vs US dollar: {} %".format(round(vs_usd_pct*100,2)))
-    print("Pire Drawdown T|D: -{}% | -{}%".format(round(max_trades_drawdown*100, 2), round(max_days_drawdown*100, 2)))
-    print("Buy and hold performance: {} %".format(round(buy_and_hold_pct*100,2)))
-    print("Performance vs buy and hold: {} %".format(round(vs_hold_pct*100,2)))
-    print("Nombre total de trades sur la période: {}".format(total_trades))
-    print("Sharpe Ratio: {}".format(round(sharpe_ratio,2)))
-    print("Global Win rate: {} %".format(round(global_win_rate*100, 2)))
-    print("Profit moyen: {} %".format(round(avg_profit*100, 2)))
-    print("Total des frais: {}$".format(round(total_fees, 2)))
+    print("Portefeuille final:".ljust(30), "{:,.2f} $".format(final_wallet))
+    print("Performance vs US dollar:".ljust(30), "{:,.2f} %".format(vs_usd_pct*100))
+    print("Pire Drawdown T|D:".ljust(30), "-{}% | -{}%".format(round(max_trades_drawdown*100, 2), round(max_days_drawdown*100, 2)))
+    print("Buy and hold performance:".ljust(30), "{} %".format(round(buy_and_hold_pct*100,2)))
+    print("Performance vs buy and hold:".ljust(30), "{:,.2f} %".format(vs_hold_pct*100))
+    print("Nombre total de trades:".ljust(30), "{}".format(total_trades))
+    print("Sharpe Ratio:".ljust(30), "{}".format(round(sharpe_ratio,2)))
+    print("Global Win rate:".ljust(30), "{} %".format(round(global_win_rate*100, 2)))
+    print("Profit moyen:".ljust(30), "{} %".format(round(avg_profit*100, 2)))
+    print("Total des frais:".ljust(30), "{:,.2f} $".format(total_fees))
+    print("\033[92m\nMeilleur trade:".ljust(25), "+{:.2f} % le {} -> {}\033[0m".format(best_trade*100, best_trade_date1, best_trade_date2))
+    print("\033[91mPire trade:".ljust(25), "{:.2f} % le {} -> {}\033[0m".format(worst_trade*100, worst_trade_date1, worst_trade_date2))
     
-    print("\033[92m\nMeilleur trade: +{} % le {} -> {}\033[0m".format(round(best_trade*100, 2), best_trade_date1, best_trade_date2))
-    print("\033[91mPire trade: {} % le {} -> {}\033[0m".format(round(worst_trade*100, 2), worst_trade_date1, worst_trade_date2))
-
     return df_trades, df_days
 
 
@@ -263,11 +262,11 @@ def plot_bar_by_month(df_days):
                     g.text(row.name,row.result, '+'+str(round(row.result))+'%', color='black', ha="center", va="bottom")
                 else:
                     g.text(row.name,row.result, '-'+str(round(row.result))+'%', color='black', ha="center", va="top")
-            g.set_title(str(current_year) + ' performance in %')
+            g.set_title(str(current_year) + ' performance en %')
             g.set(xlabel=current_year, ylabel='performance %')
             
             year_result = (df_days.loc[str(current_year)]['wallet'].iloc[-1] - df_days.loc[str(current_year)]['wallet'].iloc[0]) / df_days.loc[str(current_year)]['wallet'].iloc[0]
-            print("----- " + str(current_year) +" Cumulative Performances: " + str(round(year_result*100,2)) + "%--")
+            print("----- " + str(current_year) +" Performances cumulées: " + str(round(year_result*100,2)) + "% --")
             plt.show()
 
             current_year_array = []
