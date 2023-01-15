@@ -2,7 +2,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import datetime
-from IPython.display import display
 
 def basic_single_asset_backtest(trades, days):
     df_trades = trades.copy()
