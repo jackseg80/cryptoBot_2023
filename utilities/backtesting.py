@@ -59,8 +59,8 @@ def basic_single_asset_backtest(trades, days):
     print("Global Win rate:".ljust(30), "{} %".format(round(global_win_rate*100, 2)))
     print("Profit moyen:".ljust(30), "{} %".format(round(avg_profit*100, 2)))
     print("Total des frais:".ljust(30), "{:,.2f} $".format(total_fees))
-    print("\033[92m\nMeilleur trade:".ljust(25), "+{:.2f} % le {} -> {}\033[0m".format(best_trade*100, best_trade_date1, best_trade_date2))
-    print("\033[91mPire trade:".ljust(25), "{:.2f} % le {} -> {}\033[0m".format(worst_trade*100, worst_trade_date1, worst_trade_date2))
+    print("\033[92m\nMeilleur trade:".ljust(35), "+{:.2f} % le {} -> {}\033[0m".format(best_trade*100, best_trade_date1, best_trade_date2))
+    print("\033[91mPire trade:".ljust(35), "{:.2f} % le {} -> {}\033[0m".format(worst_trade*100, worst_trade_date1, worst_trade_date2))
     
     return df_trades, df_days
 
