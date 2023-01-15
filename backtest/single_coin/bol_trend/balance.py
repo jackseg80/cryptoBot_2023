@@ -35,9 +35,15 @@ plt.fill_between(df_filtered["time"], df_filtered["balance"], start_balance, whe
 # Gain ou pertes affiché en haut à droite
 if percentage_difference >= 0:
     color = "green"
+    sign = '+'
 else:
     color = "red"
-plt.text(df_filtered["time"].max(), final_balance, f"{final_balance:.2f}\n ({percentage_difference:.2f}%)", ha='right', va='center', color=color)
+    sign = '-'
+plt.annotate(f"{final_balance:.2f}$\n({sign}{percentage_difference:.2f}%)",
+             xy=(df_filtered["time"].max(), final_balance), xytext=(35, 35),
+             textcoords='offset points', ha='center', va='bottom', color=color,
+             bbox=dict(boxstyle='round,pad=0.4', fc='yellow', alpha=1),
+             arrowprops=dict(arrowstyle = '->', connectionstyle='arc3,rad=-0.1'))
 
 plt.legend()
 plt.title("Balance history")
