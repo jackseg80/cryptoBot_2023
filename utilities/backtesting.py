@@ -45,9 +45,10 @@ def basic_single_asset_backtest(trades, days):
     worst_trade_date1 =  str(df_trades.loc[df_trades['trade_result_pct'] == worst_trade].iloc[0]['open_date'])
     worst_trade_date2 =  str(df_trades.loc[df_trades['trade_result_pct'] == worst_trade].iloc[0]['close_date'])
     
-    print("Période:".ljust(30), "| {} -> {}".format(*[d.strftime("%Y-%m-%d") for d in [df_days.iloc[0]["day"], df_days.iloc[-1]["day"]]]))
-    print("Portefeuille initial:".ljust(30), "| {:,.2f} $".format(initial_wallet))
-    print("\n\033[1m--- Informations Générales --- \033[0m")
+    print("\n\033[1m--- Résultats backtest --- \033[0m")
+    print("Période".ljust(30), "| {} -> {}".format(*[d.strftime("%Y-%m-%d") for d in [df_days.iloc[0]["day"], df_days.iloc[-1]["day"]]]))
+    print("Portefeuille initial".ljust(30), "| {:,.2f} $".format(initial_wallet))
+    print("")
     print("Portefeuille final".ljust(30), "| {:,.2f} $".format(final_wallet))
     print("Performance vs US dollar".ljust(30), "| {:,.2f} %".format(vs_usd_pct*100))
     print("Pire Drawdown T|D".ljust(30), "| -{}% | -{}%".format(round(max_trades_drawdown*100, 2), round(max_days_drawdown*100, 2)))
