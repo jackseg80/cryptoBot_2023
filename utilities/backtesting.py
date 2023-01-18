@@ -59,13 +59,14 @@ def basic_single_asset_backtest(trades, days):
         ["Global Win rate", "{} %".format(round(global_win_rate*100, 2))],
         ["Profit moyen", "{} %".format(round(avg_profit*100, 2))],
         ["Total des frais", "{:,.2f} $".format(total_fees)],
+        [],
+        ["\033[92mMeilleur trade\033[0m","\033[92m+{:.2f} % le {} -> {}\033[0m".format(best_trade*100, best_trade_date1, best_trade_date2)],
+        ["\033[91mPire trade\033[0m", "\033[91m{:.2f} % le {} -> {}\033[0m".format(worst_trade*100, worst_trade_date1, worst_trade_date2)]
         ]
 
     headers = ["Résultats backtest", ""]
 
     print(tabulate(table, headers, tablefmt="fancy_outline"))
-    print("\033[92m\nMeilleur trade: ".ljust(20), "+{:.2f} % le {} -> {}\033[0m".format(best_trade*100, best_trade_date1, best_trade_date2))
-    print("\033[91mPire trade: ".ljust(21), "{:.2f} % le {} -> {}\033[0m".format(worst_trade*100, worst_trade_date1, worst_trade_date2))
 
     
     """print("\n\033[1m--- Résultats backtest --- \033[0m")
