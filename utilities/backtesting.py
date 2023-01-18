@@ -48,7 +48,7 @@ def basic_single_asset_backtest(trades, days):
     print("\n\033[1m--- Résultats backtest --- \033[0m")
     print("Période".ljust(30), "| {} -> {}".format(*[d.strftime("%Y-%m-%d") for d in [df_days.iloc[0]["day"], df_days.iloc[-1]["day"]]]))
     print("Portefeuille initial".ljust(30), "| {:,.2f} $".format(initial_wallet))
-    print("⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯")
+    print("⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯")
     print("Portefeuille final".ljust(30), "| {:,.2f} $".format(final_wallet))
     print("Performance vs US dollar".ljust(30), "| {:,.2f} %".format(vs_usd_pct*100))
     print("Pire Drawdown T|D".ljust(30), "| -{}% | -{}%".format(round(max_trades_drawdown*100, 2), round(max_days_drawdown*100, 2)))
@@ -59,8 +59,8 @@ def basic_single_asset_backtest(trades, days):
     print("Global Win rate".ljust(30), "| {} %".format(round(global_win_rate*100, 2)))
     print("Profit moyen".ljust(30), "| {} %".format(round(avg_profit*100, 2)))
     print("Total des frais".ljust(30), "| {:,.2f} $".format(total_fees))
-    print("\033[92m\nMeilleur trade".ljust(35), "+{:.2f} % le {} -> {}\033[0m".format(best_trade*100, best_trade_date1, best_trade_date2))
-    print("\033[91mPire trade".ljust(35), "{:.2f} % le {} -> {}\033[0m".format(worst_trade*100, worst_trade_date1, worst_trade_date2))
+    print("\033[92m\nMeilleur trade".ljust(38), "+{:.2f} % le {} -> {}\033[0m".format(best_trade*100, best_trade_date1, best_trade_date2))
+    print("\033[91mPire trade".ljust(37), "{:.2f} % le {} -> {}\033[0m".format(worst_trade*100, worst_trade_date1, worst_trade_date2))
     
     return df_trades, df_days
 
