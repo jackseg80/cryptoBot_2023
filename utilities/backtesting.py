@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import datetime
+from tabulate import tabulate
 
 def basic_single_asset_backtest(trades, days):
     df_trades = trades.copy()
@@ -45,7 +46,29 @@ def basic_single_asset_backtest(trades, days):
     worst_trade_date1 =  str(df_trades.loc[df_trades['trade_result_pct'] == worst_trade].iloc[0]['open_date'])
     worst_trade_date2 =  str(df_trades.loc[df_trades['trade_result_pct'] == worst_trade].iloc[0]['close_date'])
     
-    print("\n\033[1m--- Résultats backtest --- \033[0m")
+    table = [["Période", "{} -> {}".format(*[d.strftime("%Y-%m-%d") for d in [df_days.iloc[0]["day"], df_days.iloc[-1]["day"]]])],
+        ["Portefeuille initial", "{:,.2f} $".format(initial_wallet)],
+        [],
+        ["Portefeuille final", "{:,.2f} $".format(final_wallet)],
+        ["Performance vs US dollar", "{:,.2f} %".format(vs_usd_pct*100)],
+        ["Pire Drawdown T|D", "-{}% | -{}%".format(round(max_trades_drawdown*100, 2), round(max_days_drawdown*100, 2))],
+        ["Buy and hold performance", "{} %".format(round(buy_and_hold_pct*100,2))],
+        ["Performance vs buy and hold", "{:,.2f} %".format(vs_hold_pct*100)],
+        ["Nombre total de trades", "{}".format(total_trades)],
+        ["Sharpe Ratio", "{}".format(round(sharpe_ratio,2))],
+        ["Global Win rate", "{} %".format(round(global_win_rate*100, 2))],
+        ["Profit moyen", "{} %".format(round(avg_profit*100, 2))],
+        ["Total des frais", "{:,.2f} $".format(total_fees)],
+        ]
+
+    headers = ["Résultats backtest", ""]
+
+    print(tabulate(table, headers, tablefmt="fancy_outline"))
+    print("\033[92m\nMeilleur trade: ".ljust(20), "+{:.2f} % le {} -> {}\033[0m".format(best_trade*100, best_trade_date1, best_trade_date2))
+    print("\033[91mPire trade: ".ljust(21), "{:.2f} % le {} -> {}\033[0m".format(worst_trade*100, worst_trade_date1, worst_trade_date2))
+
+    
+    """print("\n\033[1m--- Résultats backtest --- \033[0m")
     print(" ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯")
     print("| Période".ljust(30), "| {} -> {}".format(*[d.strftime("%Y-%m-%d") for d in [df_days.iloc[0]["day"], df_days.iloc[-1]["day"]]]).ljust(28), "|")
     print("| Portefeuille initial".ljust(30), "| {:,.2f} $".format(initial_wallet).ljust(28), "|")
@@ -61,9 +84,7 @@ def basic_single_asset_backtest(trades, days):
     print("| Profit moyen".ljust(30), "| {} %".format(round(avg_profit*100, 2)).ljust(28), "|")
     print("| Total des frais".ljust(30), "| {:,.2f} $".format(total_fees).ljust(28), "|")
     print(" ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯")
-    print("\033[92m\nMeilleur trade".ljust(38), "+{:.2f} % le {} -> {}\033[0m".format(best_trade*100, best_trade_date1, best_trade_date2))
-    print("\033[91mPire trade".ljust(37), "{:.2f} % le {} -> {}\033[0m".format(worst_trade*100, worst_trade_date1, worst_trade_date2))
-    
+    """
     return df_trades, df_days
 
 
