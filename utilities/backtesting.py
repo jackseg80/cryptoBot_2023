@@ -68,24 +68,6 @@ def basic_single_asset_backtest(trades, days):
 
     print(tabulate(table, headers, tablefmt="fancy_outline"))
 
-    
-    """print("\n\033[1m--- Résultats backtest --- \033[0m")
-    print(" ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯")
-    print("| Période".ljust(30), "| {} -> {}".format(*[d.strftime("%Y-%m-%d") for d in [df_days.iloc[0]["day"], df_days.iloc[-1]["day"]]]).ljust(28), "|")
-    print("| Portefeuille initial".ljust(30), "| {:,.2f} $".format(initial_wallet).ljust(28), "|")
-    print(" ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯")
-    print("| Portefeuille final".ljust(30), "| {:,.2f} $".format(final_wallet).ljust(28), "|")
-    print("| Performance vs US dollar".ljust(30), "| {:,.2f} %".format(vs_usd_pct*100).ljust(28), "|")
-    print("| Pire Drawdown T|D".ljust(30), "| -{}% | -{}%".format(round(max_trades_drawdown*100, 2), round(max_days_drawdown*100, 2)).ljust(28), "|")
-    print("| Buy and hold performance".ljust(30), "| {} %".format(round(buy_and_hold_pct*100,2)).ljust(28), "|")
-    print("| Performance vs buy and hold".ljust(30), "| {:,.2f} %".format(vs_hold_pct*100).ljust(28), "|")
-    print("| Nombre total de trades".ljust(30), "| {}".format(total_trades).ljust(28), "|")
-    print("| Sharpe Ratio".ljust(30), "| {}".format(round(sharpe_ratio,2)).ljust(28), "|")
-    print("| Global Win rate".ljust(30), "| {} %".format(round(global_win_rate*100, 2)).ljust(28), "|")
-    print("| Profit moyen".ljust(30), "| {} %".format(round(avg_profit*100, 2)).ljust(28), "|")
-    print("| Total des frais".ljust(30), "| {:,.2f} $".format(total_fees).ljust(28), "|")
-    print(" ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯")
-    """
     return df_trades, df_days
 
 
@@ -126,40 +108,36 @@ def basic_multi_asset_backtest(trades, days):
     vs_hold_pct = (final_wallet - buy_and_hold_wallet)/buy_and_hold_wallet
     vs_usd_pct = (final_wallet - initial_wallet)/initial_wallet
     sharpe_ratio = (365**0.5)*(df_days['daily_return'].mean()/df_days['daily_return'].std())
+    total_fees = df_trades['open_fee'].sum() + df_trades['close_fee'].sum()
     
-    print("Period: [{}] -> [{}]".format(df_days.iloc[0]["day"], df_days.iloc[-1]["day"]))
-    print("Initial wallet: {}".format(round(initial_wallet,2)))
-    print("Trades on {} pairs".format(total_pair_traded))
+    best_trade = df_trades['trade_result_pct'].max()
+    best_trade_date1 =  str(df_trades.loc[df_trades['trade_result_pct'] == best_trade].iloc[0]['open_date'])
+    best_trade_date2 =  str(df_trades.loc[df_trades['trade_result_pct'] == best_trade].iloc[0]['close_date'])
+    worst_trade = df_trades['trade_result_pct'].min()
+    worst_trade_date1 =  str(df_trades.loc[df_trades['trade_result_pct'] == worst_trade].iloc[0]['open_date'])
+    worst_trade_date2 =  str(df_trades.loc[df_trades['trade_result_pct'] == worst_trade].iloc[0]['close_date'])
     
-    print("\n--- General Information")
-    print("Final wallet: {}".format(round(final_wallet,2)))
-    print("Performance vs US dollar: {} %".format(round(vs_usd_pct*100,2)))
-    print("Sharpe Ratio: {}".format(round(sharpe_ratio,2)))
-    print("Worst Drawdown T|D: -{}% | -{}%".format(round(max_trades_drawdown*100, 2), round(max_days_drawdown*100, 2)))
-    print("Buy and hold performance: {} %".format(round(buy_and_hold_pct*100,2)))
-    print("Performance vs buy and hold: {} %".format(round(vs_hold_pct*100,2)))
-    print("Total trades on the period: {}".format(total_trades))
-    print("Global Win rate: {} %".format(round(global_win_rate*100, 2)))
-    print("Average Profit: {} %".format(round(avg_profit*100, 2)))
-    
-    print("\n----- Pair Result--")
-    print('-' * 95)
-    print('{:<6s}{:>10s}{:>15s}{:>15s}{:>15s}{:>15s}{:>15s}'.format(
-                "Trades","Pair","Sum-result","Mean-trade","Worst-trade","Best-trade","Win-rate"
-                ))
-    print('-' * 95)
-    for pair in df_trades["pair"].unique():
-        df_pair = df_trades.loc[df_trades["pair"] == pair]
-        pair_total_trades = len(df_pair)
-        pair_good_trades = len(df_pair.loc[df_pair["trade_result"] > 0])
-        pair_worst_trade = str(round(df_pair["trade_result_pct"].min() * 100, 2))+' %'
-        pair_best_trade = str(round(df_pair["trade_result_pct"].max() * 100, 2))+' %'
-        pair_win_rate = str(round((pair_good_trades / pair_total_trades) * 100, 2))+' %'
-        pair_sum_result = str(round(df_pair["trade_result_pct"].sum() * 100, 2))+' %'
-        pair_avg_result = str(round(df_pair["trade_result_pct"].mean() * 100, 2))+' %'
-        print('{:<6d}{:>10s}{:>15s}{:>15s}{:>15s}{:>15s}{:>15s}'.format(
-                            pair_total_trades,pair,pair_sum_result,pair_avg_result,pair_worst_trade,pair_best_trade,pair_win_rate
-                        ))
+    table = [["Période", "{} -> {}".format(*[d.strftime("%Y-%m-%d") for d in [df_days.iloc[0]["day"], df_days.iloc[-1]["day"]]])],
+        ["Portefeuille initial", "{:,.2f} $".format(initial_wallet)],
+        [],
+        ["Portefeuille final", "{:,.2f} $".format(final_wallet)],
+        ["Performance vs US dollar", "{:,.2f} %".format(vs_usd_pct*100)],
+        ["Pire Drawdown T|D", "-{}% | -{}%".format(round(max_trades_drawdown*100, 2), round(max_days_drawdown*100, 2))],
+        ["Buy and hold performance", "{} %".format(round(buy_and_hold_pct*100,2))],
+        ["Performance vs buy and hold", "{:,.2f} %".format(vs_hold_pct*100)],
+        ["Nombre total de trades", "{}".format(total_trades)],
+        ["Sharpe Ratio", "{}".format(round(sharpe_ratio,2))],
+        ["Global Win rate", "{} %".format(round(global_win_rate*100, 2))],
+        ["Profit moyen", "{} %".format(round(avg_profit*100, 2))],
+        ["Total des frais", "{:,.2f} $".format(total_fees)],
+        [],
+        ["\033[92mMeilleur trade\033[0m","\033[92m+{:.2f} % le {} -> {}\033[0m".format(best_trade*100, best_trade_date1, best_trade_date2)],
+        ["\033[91mPire trade\033[0m", "\033[91m{:.2f} % le {} -> {}\033[0m".format(worst_trade*100, worst_trade_date1, worst_trade_date2)]
+        ]
+
+    headers = ["Résultats backtest", ""]
+
+    print(tabulate(table, headers, tablefmt="fancy_outline"))
     
     return df_trades, df_days
 
@@ -254,7 +232,7 @@ def get_n_columns(df, columns, n=1):
 
 
 def plot_bar_by_month(df_days):
-    sns.set(rc={'figure.figsize':(11.7,8.27)})
+    sns.set(rc={'figure.figsize':(11.5,7)})
     custom_palette = {}
     
     last_month = int(df_days.iloc[-1]['day'].month)
@@ -294,6 +272,7 @@ def plot_bar_by_month(df_days):
             plt.show()
 
             current_year_array = []
+            
         
         current_month += 1
         if current_month > 12:
