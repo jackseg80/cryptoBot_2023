@@ -1,0 +1,119 @@
+//@version=5
+strategy("Bollinger Trend - Strategy V1", overlay=true, default_qty_type=strategy.percent_of_equity, default_qty_value=99, initial_capital=1000, commission_type=strategy.commission.percent, commission_value=0.07)
+
+//---------------------------------
+//------------ INPUT --------------
+src = input(close, title="Source")
+
+//------------- BB ----------------
+length = input.int(100, minval=1, step=5,  title = "Window of the Bollinger Band", group = "Bollinger Band")
+mult = input.float(2.1, minval=0.001, step=0.25, maxval=50, title="Standard Deviation of the Bollinger Band", group = "Bollinger Band")
+
+spread_input = input.float(0.0, minval=0, maxval=10, step=0.001, title="Minimal spread between the two Bollinger Band", group = "Global Input")
+
+
+//----------- MA -----------------
+show_ma = input(title='Enable', defval=true, group = "MA Input")
+ma_input = input.int(480, step=50, title='MA length', group = "MA Input")
+select_ma = input.string(title='Select MA Type', options=['MA', 'EMA', 'WMA'], defval='MA', group = "MA Input")
+
+
+//------------ POSITIONS ----------
+
+use_longs = input.bool(true, 'Long Positions', group = "Positions Input") 
+use_short = input.bool(false, 'Short Positions', group = "Positions Input")
+use_period = input.bool(true, "Analysis period ?", group="Period")
+startDate = input.time(timestamp("01 Jan 2020"), "Start date", group="Period")
+endDate = input.time(timestamp("01 Jan 2025"), "End Date", group="Period")
+
+//---------------------------------
+//----------- INDICATOR -----------
+
+//BB
+
+basis = ta.sma(src, length)
+dev = mult * ta.stdev(src, length)
+upper = basis + dev
+lower = basis - dev
+spread = (upper - lower)/lower
+
+//-------------- MA --------------
+
+sma_1 = ta.sma(close, ma_input)
+ema_1 = ta.ema(close, ma_input)
+wma_1 = ta.wma(close, ma_input)
+ma_1 = show_ma ? select_ma == 'MA' ? sma_1 : select_ma == 'EMA' ? ema_1 : select_ma == 'WMA' ? wma_1 : na : na
+
+//time
+inDateRange = use_period ? ((time >= startDate) and (time < endDate)) : true
+
+
+// ---------------------------------------------
+// --------------- STRATEGY --------------------
+
+
+if inDateRange
+
+    if use_longs
+        open_long = close[1] < upper[1] and close > upper and spread > spread_input and strategy.position_size == 0 and (show_ma ? close > ma_1 : close > 0)
+        
+        if open_long
+            strategy.entry('long', strategy.long)
+        if close < basis
+            strategy.close('long')
+
+    
+    if use_short
+        open_short = close[1] > lower[1] and close < lower and spread > spread_input and strategy.position_size == 0 and (show_ma ? close < ma_1 : close > 0)
+        
+        if open_short
+            strategy.entry('short', strategy.short)
+        if close > basis
+            strategy.close('short')
+
+
+
+//----------------------------------------------
+//---------------- BACKTEST --------------------
+
+strategy_pnl = strategy.netprofit + strategy.openprofit
+bnh_strategy_pnl_pcnt = (strategy_pnl / strategy.initial_capital) * 100
+
+float bnh_start_bar = na
+bnh_start_bar := na(bnh_start_bar[1]) or inDateRange != true? close : bnh_start_bar[1]
+float bnl_buy_hold_equity = na
+bnl_buy_hold_equity :=  inDateRange == true ? ((close - bnh_start_bar)/bnh_start_bar) * 100 : bnl_buy_hold_equity[1]
+
+bnh_vs_diff = bnh_strategy_pnl_pcnt - bnl_buy_hold_equity
+bnh_diff_color = bnh_vs_diff > 0 ? color.new(color.green, inDateRange ? 60 : 100) : color.new(color.red, inDateRange ? 60 : 100)
+
+
+
+
+// ---------------------------------------------
+// ------------------ PLOT ---------------------
+
+
+plot(basis, "Basis", color=#FF6D00)
+p1 = plot(upper, "Upper", color=#2962FF)
+p2 = plot(lower, "Lower", color=#2962FF)
+fill(p1, p2, title = "Background", color = spread > spread_input ? color.new(color.green , 70) : color.new(color.red , 70))
+
+
+
+plot(ma_1, color=color.new(#57008a, 0), linewidth=3, title='MA1')
+
+
+
+//-----------------------------------------------
+//-------------------- TABLE --------------------
+
+var Table = table.new(position.bottom_left, columns = 2, rows = 4, border_width = 1, bgcolor = color.black, border_color = color.gray)
+table.cell(table_id = Table, column = 0, row = 0, text_color=(bnh_strategy_pnl_pcnt>bnl_buy_hold_equity)?color.gray:color.green, text_size = size.small, text = "Buy & hold profit")
+table.cell(table_id = Table, column = 1, row = 0, text_color=(bnh_strategy_pnl_pcnt>bnl_buy_hold_equity)?color.gray:color.green, text_size = size.small, text = str.tostring(bnl_buy_hold_equity, '#.##') + ' %')
+table.cell(table_id = Table, column = 0, row = 1, text_color=(bnh_strategy_pnl_pcnt<bnl_buy_hold_equity)?color.gray:color.green, text_size = size.small, text = "Strategy profit")
+table.cell(table_id = Table, column = 1, row = 1, text_color=(bnh_strategy_pnl_pcnt<bnl_buy_hold_equity)?color.gray:color.green, text_size = size.small, text = str.tostring(bnh_strategy_pnl_pcnt, '#.##') + ' %')
+table.cell(table_id = Table, column = 0, row = 2, text_color=color.yellow, text_size = size.small, text = "Winrate")
+table.cell(table_id = Table, column = 1, row = 2, text_color=color.yellow, text_size = size.small, text = str.tostring(strategy.wintrades/strategy.closedtrades*100, '#.##') + ' %')
+table.cell(table_id = Table, column = 0, row = 3, text_color=color.yellow, text_size = size.small, text = "First Trade")
+table.cell(table_id = Table, column = 1, row = 3, text_color=color.yellow, text_size = size.small, text = str.format("{0,date,HH:mm:ss yyyy.MM.dd}", strategy.closedtrades.entry_time(0)))
