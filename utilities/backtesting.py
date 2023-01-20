@@ -4,7 +4,7 @@ import seaborn as sns
 import datetime
 from tabulate import tabulate
 
-def basic_single_asset_backtest(trades, days):
+def basic_single_asset_backtest(trades, days, pair):
     df_trades = trades.copy()
     df_days = days.copy()
     
@@ -68,7 +68,7 @@ def basic_single_asset_backtest(trades, days):
         ["\033[91mPire trade\033[0m", "\033[91m{:.2f} % le {} -> {}\033[0m".format(worst_trade*100, worst_trade_date1, worst_trade_date2)]
         ]
 
-    headers = ["Résultats backtest", ""]
+    headers = ["Résultats backtest", pair]
 
     print(tabulate(table, headers, tablefmt="fancy_outline"))
 
@@ -157,11 +157,13 @@ def plot_sharpe_evolution(df_days):
     df_days_copy['sharpe'].plot(figsize=(18, 9))
 
 
-def plot_wallet_vs_asset(df_days, log=False):
+def plot_wallet_vs_asset(df_days, pair, log=False):
     days = df_days.copy()
+    coin = pair.split("/")[0]
     # print("-- Plotting equity vs asset and drawdown --")
     fig, ax_left = plt.subplots(figsize=(15, 20), nrows=4, ncols=1)
-
+    
+    ax_left[0].grid(True, which='both', color='black', linewidth=1, linestyle='--', alpha=0.1)
     ax_left[0].title.set_text("Courbe de capital stratégique")
     ax_left[0].plot(days['wallet'], color='royalblue', lw=1)
     if log:
@@ -170,7 +172,8 @@ def plot_wallet_vs_asset(df_days, log=False):
     ax_left[0].axhline(y=days.iloc[0]['wallet'], color='black', alpha=0.3)
     ax_left[0].legend(['Evolution du portefeuille (capital)'], loc ="upper left")
 
-    ax_left[1].title.set_text("Evolution de la devise de base ")
+    ax_left[1].grid(True, which='both', color='black', linewidth=1, linestyle='--', alpha=0.1)
+    ax_left[1].title.set_text("Cours "+ coin)
     ax_left[1].plot(days['price'], color='sandybrown', lw=1)
     if log:
         ax_left[1].set_yscale('log')
@@ -178,6 +181,7 @@ def plot_wallet_vs_asset(df_days, log=False):
     ax_left[1].axhline(y=days.iloc[0]['price'], color='black', alpha=0.3)
     ax_left[1].legend(["Evolution de l'actif"], loc ="upper left")
 
+    ax_left[2].xaxis.grid(True, color='black', linewidth=1, linestyle='--', alpha=0.1)
     ax_left[2].title.set_text("Courbe du drawdown")
     ax_left[2].plot(-days['drawdown_pct']*100, color='indianred', lw=1)
     ax_left[2].fill_between(days['drawdown_pct'].index, -days['drawdown_pct']*100, alpha=0.2, color='indianred')
@@ -189,7 +193,7 @@ def plot_wallet_vs_asset(df_days, log=False):
         ax_left[3].set_yscale('log')
         ax_right.set_yscale('log')
 
-    ax_left[3].title.set_text("Portefeuille VS Actif (pas à la même échelle)")
+    ax_left[3].title.set_text("Portefeuille VS "+ coin + " (pas à la même échelle)")
     ax_left[3].set_yticks([])
     ax_right.set_yticks([])
     ax_left[3].plot(days['wallet'], color='royalblue', lw=1)

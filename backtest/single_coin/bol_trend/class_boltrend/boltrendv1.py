@@ -85,7 +85,7 @@ class BolTrend():
         return self.df
         
     # Backtest
-    def run_backtest(self, initial_wallet=1000, leverage=1, maker_fee=0.0002, taker_fee=0.0007):
+    def run_backtest(self, initial_wallet=1000, leverage=1, pair="", maker_fee=0.0002, taker_fee=0.0007):
         df = self.df[:]
         wallet = initial_wallet
         trades = []
