@@ -40,13 +40,17 @@ def basic_single_asset_backtest(trades, days):
     total_fees = df_trades['open_fee'].sum() + df_trades['close_fee'].sum()
     
     best_trade = df_trades['trade_result_pct'].max()
-    best_trade_date1 =  str(df_trades.loc[df_trades['trade_result_pct'] == best_trade].iloc[0]['open_date'])
-    best_trade_date2 =  str(df_trades.loc[df_trades['trade_result_pct'] == best_trade].iloc[0]['close_date'])
+    best_trade_date1 = df_trades.loc[df_trades['trade_result_pct'] == best_trade].iloc[0]['open_date']
+    best_trade_date1 = best_trade_date1.strftime("%d.%m.%Y")
+    best_trade_date2 = df_trades.loc[df_trades['trade_result_pct'] == best_trade].iloc[0]['close_date']
+    best_trade_date2 = best_trade_date2.strftime("%d.%m.%Y")
     worst_trade = df_trades['trade_result_pct'].min()
-    worst_trade_date1 =  str(df_trades.loc[df_trades['trade_result_pct'] == worst_trade].iloc[0]['open_date'])
-    worst_trade_date2 =  str(df_trades.loc[df_trades['trade_result_pct'] == worst_trade].iloc[0]['close_date'])
+    worst_trade_date1 = df_trades.loc[df_trades['trade_result_pct'] == worst_trade].iloc[0]['open_date']
+    worst_trade_date1 = worst_trade_date1.strftime("%d.%m.%Y")
+    worst_trade_date2 = df_trades.loc[df_trades['trade_result_pct'] == worst_trade].iloc[0]['close_date']
+    worst_trade_date2 = worst_trade_date2.strftime("%d.%m.%Y")
     
-    table = [["Période", "{} -> {}".format(*[d.strftime("%Y-%m-%d") for d in [df_days.iloc[0]["day"], df_days.iloc[-1]["day"]]])],
+    table = [["Période", "{} -> {}".format(*[d.strftime("%d.%m.%Y") for d in [df_days.iloc[0]["day"], df_days.iloc[-1]["day"]]])],
         ["Portefeuille initial", "{:,.2f} $".format(initial_wallet)],
         [],
         ["Portefeuille final", "{:,.2f} $".format(final_wallet)],
@@ -117,7 +121,7 @@ def basic_multi_asset_backtest(trades, days):
     worst_trade_date1 =  str(df_trades.loc[df_trades['trade_result_pct'] == worst_trade].iloc[0]['open_date'])
     worst_trade_date2 =  str(df_trades.loc[df_trades['trade_result_pct'] == worst_trade].iloc[0]['close_date'])
     
-    table = [["Période", "{} -> {}".format(*[d.strftime("%Y-%m-%d") for d in [df_days.iloc[0]["day"], df_days.iloc[-1]["day"]]])],
+    table = [["Période", "{} -> {}".format(*[d.strftime("%d.%m.%Y") for d in [df_days.iloc[0]["day"], df_days.iloc[-1]["day"]]])],
         ["Portefeuille initial", "{:,.2f} $".format(initial_wallet)],
         [],
         ["Portefeuille final", "{:,.2f} $".format(final_wallet)],
