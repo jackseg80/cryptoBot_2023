@@ -4,7 +4,7 @@ import seaborn as sns
 import datetime
 from tabulate import tabulate
 
-def basic_single_asset_backtest(trades, days, pair):
+def basic_single_asset_backtest(trades, days, pair, tf):
     df_trades = trades.copy()
     df_days = days.copy()
     
@@ -68,7 +68,7 @@ def basic_single_asset_backtest(trades, days, pair):
         ["\033[91mPire trade\033[0m", "\033[91m{:.2f} % le {} -> {}\033[0m".format(worst_trade*100, worst_trade_date1, worst_trade_date2)]
         ]
 
-    headers = ["Résultats backtest", pair]
+    headers = ["Résultats backtest", pair + '('+ tf + ')']
 
     print(tabulate(table, headers, tablefmt="fancy_outline"))
 
