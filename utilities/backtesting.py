@@ -481,15 +481,15 @@ def complete_multi_asset_backtest(
     
     
     if trades_info:
-        table_trades = [["Moyenne Trades par jour", "{}".format(round(mean_trades_per_days, 2))],
-        ["Moyenne temps Trades", "{}".format(mean_trades_duration)],
+        table_trades = [["Moyenne trades par jour", "{}".format(round(mean_trades_per_days, 2))],
+        ["Moyenne temps trades", "{}".format(mean_trades_duration)],
         ["Total bons trades sur la période", "{}".format(total_good_trades)],
         ["Total mauvais trades sur la période", "{}".format(total_bad_trades)],
         ["Résultat moyen des bons trades", "{} %".format(round(avg_profit_good_trades*100, 2))],
         ["Résultat moyen des mauvais trades", "{} %".format(round(avg_profit_bad_trades*100, 2))],
         ["Durée moyenne des bons trades", "{}".format(mean_good_trades_duration)],
         ["Durée moyenne des mauvais trades", "{}".format(mean_bad_trades_duration)],
-        ["Meilleur trade","+ {:.2f} % le {} -> {} ({})".format(best_trade*100, best_trade_date1, best_trade_date2, best_trade_pair)],
+        ["Meilleur trade","+{:.2f} % le {} -> {} ({})".format(best_trade*100, best_trade_date1, best_trade_date2, best_trade_pair)],
         ["Pire trade", "{:.2f} % le {} -> {} ({})".format(worst_trade*100, worst_trade_date1, worst_trade_date2, worst_trade_pair)],
         ]
         
