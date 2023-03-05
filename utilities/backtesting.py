@@ -493,7 +493,7 @@ def complete_multi_asset_backtest(
         ["Pire trade", "{:.2f} % le {} -> {} ({})".format(worst_trade*100, worst_trade_date1, worst_trade_date2, worst_trade_pair)],
         ]
         
-        headers = ["Informations Trades", ""]
+        headers = ["Trades", ""]
         print(tabulate(table_trades, headers, tablefmt="fancy_outline"))
         
 
@@ -509,7 +509,7 @@ def complete_multi_asset_backtest(
         ["Pire jour", "{} ({} %)".format(worst_day_date, round(worst_day_return*100, 2))],
         ]
         
-        headers = ["Informations Jours", ""]
+        headers = ["Jours", ""]
         print(tabulate(table_days, headers, tablefmt="fancy_outline"))
 
 
@@ -524,7 +524,7 @@ def complete_multi_asset_backtest(
         ["VAR Min", "{} %".format(round(min_risk, 2))],
         ]
         
-        headers = ["Informations Exposition", ""]
+        headers = ["Exposition", ""]
         print(tabulate(table_exposition, headers, tablefmt="fancy_outline"))
  
         
@@ -532,7 +532,7 @@ def complete_multi_asset_backtest(
         long_trades = df_trades.loc[df_trades['position'] == "LONG"]
         short_trades = df_trades.loc[df_trades['position'] == "SHORT"]
         if long_trades.empty or short_trades.empty:
-            print("!!! No long or short trades found")
+            print("!!! Pas de trades Short ou Long trouvé")
         else:
             total_long_trades = len(long_trades)
             total_short_trades = len(short_trades)
@@ -553,7 +553,7 @@ def complete_multi_asset_backtest(
             print("\n--- " + "LONG informations" + " ---")
             print(f"Total LONG trades sur la periode: {total_long_trades}")
             print(f"LONG Win rate: {round(long_win_rate*100, 2)} %")
-            print(f"Bénéfince moyen LONG: {round(long_average_profit*100, 2)} %")
+            print(f"Bénéfice moyen LONG: {round(long_average_profit*100, 2)} %")
             print("\n--- " + "SHORT informations" + " ---")
             print(f"Total SHORT trades sur la période: {total_short_trades}")
             print(f"SHORT Win rate: {round(short_win_rate*100, 2)} %")
