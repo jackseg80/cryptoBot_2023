@@ -296,4 +296,5 @@ class TooManyError(Exception):
 asyncio.run(exchange.download_data(["BTC/USDT", "ETH/USDT", "BNB/USDT", "LTC/USDT", "ADA/USDT", "XRP/USDT", "EOS/USDT", "TRX/USDT",
                                     "ETC/USDT", "VET/USDT", "LINK/USDT", "MATIC/USDT", "ATOM/USDT", "DOGE/USDT", "CHZ/USDT", "BCH/USDT",
                                     "MKR/USDT", "SAND/USDT", "SOL/USDT", "DOT/USDT", "EGLD/USDT", "AVAX/USDT", "FIL/USDT", "AAVE/USDT",
-                                    "AXS/USDT", "GRT/USDT", "CAKE/USDT", "SHIB/USDT", "APE/USDT"], ["15m", "1h", "2h", "1d"], start_date="2017-01-01 00:00:00")) """
+                                    "AXS/USDT", "GRT/USDT", "CAKE/USDT", "SHIB/USDT", "APE/USDT", "DYDX/USDT", "NEAR/USDT"], 
+                                   ["15m", "1h", "2h", "1d"], start_date="2017-01-01 00:00:00")) """
