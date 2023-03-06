@@ -550,17 +550,19 @@ def complete_multi_asset_backtest(
             short_win_rate = total_good_short_trades / total_short_trades
             long_average_profit = long_trades[result_to_use].mean()
             short_average_profit = short_trades[result_to_use].mean()
-            print("\n--- " + "LONG informations" + " ---")
-            print(f"Total LONG trades sur la periode: {total_long_trades}")
-            print(f"LONG Win rate: {round(long_win_rate*100, 2)} %")
-            print(f"Bénéfice moyen LONG: {round(long_average_profit*100, 2)} %")
-            print("\n--- " + "SHORT informations" + " ---")
-            print(f"Total SHORT trades sur la période: {total_short_trades}")
-            print(f"SHORT Win rate: {round(short_win_rate*100, 2)} %")
-            print(f"Bénéfice moyen SHORT: {round(short_average_profit*100, 2)} %")
+            print("\n" + "-"*14 + "LONG informations" + "-" *14)
+            print(f"Total LONG trades sur la periode: \t{total_long_trades}")
+            print(f"LONG Win rate: \t\t\t\t\t\t{round(long_win_rate*100, 2)} %")
+            print(f"Bénéfice moyen LONG: \t\t\t\t{round(long_average_profit*100, 2)} %")
+            print("-" * 45)
+            print("\n" + "-" *13 + "SHORT informations" + "-" *14)
+            print(f"Total SHORT trades sur la période: \t{total_short_trades}")
+            print(f"SHORT Win rate: \t\t\t\t\t{round(short_win_rate*100, 2)} %")
+            print(f"Bénéfice moyen SHORT: \t\t\t\t{round(short_average_profit*100, 2)} %")
+            print("-" * 45)
     
     if entry_exit_info:
-        print("\n" + "-" * 16 + " Entrées " + "-" * 16)
+        print("\n" + "-" *16 + " Entrées " + "-" *16)
         total_entries = len(df_trades)
         open_dict = df_trades.groupby("position")["open_reason"].value_counts().to_dict()
         for entry in open_dict:
