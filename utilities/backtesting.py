@@ -203,52 +203,7 @@ def plot_wallet_vs_asset(df_days, pair, log=False):
     ax_right.legend(["Evolution de l'actif"], bbox_to_anchor=(0, 0.9), loc ="upper left")
 
     plt.show()
-    
-def plot_wallet_vs_asset_multi(df_days, log=False):
-    days = df_days.copy()
-    # print("-- Plotting equity vs asset and drawdown --")
-    fig, ax_left = plt.subplots(figsize=(15, 20), nrows=4, ncols=1)
-    
-    ax_left[0].grid(True, which='both', color='black', linewidth=1, linestyle='--', alpha=0.1)
-    ax_left[0].title.set_text("Courbe de capital stratégique")
-    ax_left[0].plot(days['wallet'], color='royalblue', lw=1)
-    if log:
-        ax_left[0].set_yscale('log')
-    ax_left[0].fill_between(days['wallet'].index, days['wallet'], alpha=0.2, color='royalblue')
-    ax_left[0].axhline(y=days.iloc[0]['wallet'], color='black', alpha=0.3)
-    ax_left[0].legend(['Evolution du portefeuille (capital)'], loc ="upper left")
-
-    ax_left[1].grid(True, which='both', color='black', linewidth=1, linestyle='--', alpha=0.1)
-    ax_left[1].title.set_text("Cours ")
-    ax_left[1].plot(days['price'], color='sandybrown', lw=1)
-    if log:
-        ax_left[1].set_yscale('log')
-    ax_left[1].fill_between(days['price'].index, days['price'], alpha=0.2, color='sandybrown')
-    ax_left[1].axhline(y=days.iloc[0]['price'], color='black', alpha=0.3)
-    ax_left[1].legend(["Evolution de l'actif"], loc ="upper left")
-
-    ax_left[2].xaxis.grid(True, color='black', linewidth=1, linestyle='--', alpha=0.1)
-    ax_left[2].title.set_text("Courbe du drawdown")
-    ax_left[2].plot(-days['drawdown_pct']*100, color='indianred', lw=1)
-    ax_left[2].fill_between(days['drawdown_pct'].index, -days['drawdown_pct']*100, alpha=0.2, color='indianred')
-    ax_left[2].axhline(y=0, color='black', alpha=0.3)
-    ax_left[2].legend(['Drawdown en %'], loc ="lower left")
-
-    ax_right = ax_left[3].twinx()
-    if log:
-        ax_left[3].set_yscale('log')
-        ax_right.set_yscale('log')
-
-    ax_left[3].title.set_text("Portefeuille VS Assets (pas à la même échelle)")
-    ax_left[3].set_yticks([])
-    ax_right.set_yticks([])
-    ax_left[3].plot(days['wallet'], color='royalblue', lw=1)
-    ax_right.plot(days['price'], color='sandybrown', lw=1)
-    ax_left[3].legend(['Evolution du portefeuille (capital)'], loc ="upper left")
-    ax_right.legend(["Evolution de l'actif"], bbox_to_anchor=(0, 0.9), loc ="upper left")
-
-    plt.show()
- 
+     
     
 def get_metrics(df_trades, df_days):
     df_days_copy = df_days.copy()
