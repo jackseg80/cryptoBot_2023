@@ -292,9 +292,11 @@ class TooManyError(Exception):
     pass
 
 # Décommenter pour télécharger les dernières datas
-""" exchange = ExchangeDataManager(exchange_name="binance", path_download="./database/exchanges")
-asyncio.run(exchange.download_data(["BTC/USDT", "ETH/USDT", "BNB/USDT", "LTC/USDT", "ADA/USDT", "XRP/USDT", "EOS/USDT", "TRX/USDT",
-                                    "ETC/USDT", "VET/USDT", "LINK/USDT", "MATIC/USDT", "ATOM/USDT", "DOGE/USDT", "CHZ/USDT", "BCH/USDT",
-                                    "MKR/USDT", "SAND/USDT", "SOL/USDT", "DOT/USDT", "EGLD/USDT", "AVAX/USDT", "FIL/USDT", "AAVE/USDT",
-                                    "AXS/USDT", "GRT/USDT", "CAKE/USDT", "SHIB/USDT", "APE/USDT", "DYDX/USDT", "NEAR/USDT"], 
-                                   ["15m", "30m", "1h", "2h", "4h", "1d"], start_date="2017-01-01 00:00:00")) """
+""" pair_bol_trend_multi = ["BTC/USDT", "AAVE/USDT","APE/USDT","APT/USDT","AVAX/USDT","AXS/USDT","C98/USDT","CRV/USDT",
+                        "DOGE/USDT","DOT/USDT","DYDX/USDT","ETH/USDT","FIL/USDT","FTM/USDT","BNB/USDT","GALA/USDT",
+                        "GMT/USDT","GRT/USDT","KNC/USDT","KSM/USDT","LRC/USDT","MANA/USDT","MASK/USDT","MATIC/USDT",
+                        "NEAR/USDT","ONE/USDT","OP/USDT","SAND/USDT","SHIB/USDT","SOL/USDT","STG/USDT","WAVES/USDT",
+                        "YFI/USDT","WOO/USDT","EGLD/USDT","ETC/USDT","JASMY/USDT","ROSE/USDT"]
+
+exchange = ExchangeDataManager(exchange_name="binance", path_download="./database/exchanges")
+asyncio.run(exchange.download_data(pair_bol_trend_multi, ["1h", "2h", "1d"], start_date="2017-01-01 00:00:00")) """

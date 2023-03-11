@@ -1,3 +1,4 @@
+# Classes des différentes stratégies de trading
 import sys
 sys.path.append('..')
 from utilities.custom_indicators import get_n_columns
