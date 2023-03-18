@@ -299,4 +299,4 @@ class TooManyError(Exception):
                         "YFI/USDT","WOO/USDT","EGLD/USDT","ETC/USDT","JASMY/USDT","ROSE/USDT","ADA/USDT","LINK/USDT","ATOM/USDT"]
 
 exchange = ExchangeDataManager(exchange_name="binance", path_download="./database/exchanges")
-asyncio.run(exchange.download_data(pair_bol_trend_multi, ["1h", "1d"], start_date="2017-01-01 00:00:00")) """
+asyncio.run(exchange.download_data(pair_bol_trend_multi, ["30m", "1h", "1d"], start_date="2017-01-01 00:00:00")) """
