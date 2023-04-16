@@ -296,7 +296,8 @@ class TooManyError(Exception):
                         "DOGE/USDT","DOT/USDT","DYDX/USDT","ETH/USDT","FIL/USDT","FTM/USDT","BNB/USDT","GALA/USDT",
                         "GMT/USDT","GRT/USDT","KNC/USDT","KSM/USDT","LRC/USDT","MANA/USDT","MASK/USDT","MATIC/USDT",
                         "NEAR/USDT","ONE/USDT","OP/USDT","SAND/USDT","SHIB/USDT","SOL/USDT","STG/USDT","WAVES/USDT",
-                        "YFI/USDT","WOO/USDT","EGLD/USDT","ETC/USDT","JASMY/USDT","ROSE/USDT","ADA/USDT","LINK/USDT","ATOM/USDT"]
+                        "YFI/USDT","WOO/USDT","EGLD/USDT","ETC/USDT","JASMY/USDT","ROSE/USDT","ADA/USDT","LINK/USDT",
+                        "ATOM/USDT","XRP/USDT","LIT/USDT","RDNT/USDT","ICX/USDT","ZEC/USDT"]
 
 exchange = ExchangeDataManager(exchange_name="binance", path_download="./database/exchanges")
 asyncio.run(exchange.download_data(pair_bol_trend_multi, ["30m", "1h", "1d"], start_date="2017-01-01 00:00:00")) """
