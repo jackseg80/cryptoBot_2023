@@ -5,7 +5,7 @@
 Prérequis: Python, Node, Git
 
 Mise en place du projet:
->git clone https://github.com/jackseg80/Backtest-Tools-V2.git
+>git clone https://github.com/jackseg80/cryptoBot_2023.git
 >cd backtest_tools
 
 Mise en place de l'environnement virtuel (très recommandé):
