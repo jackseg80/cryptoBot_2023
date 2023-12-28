@@ -238,7 +238,7 @@ def get_n_columns(df, columns, n=1):
     for col in columns:
         dt["n"+str(n)+"_"+col] = dt[col].shift(n)
     return dt
-
+ 
 
 def plot_bar_by_month(df_days):
     sns.set(rc={'figure.figsize':(11.5,7)})
@@ -250,7 +250,7 @@ def plot_bar_by_month(df_days):
     current_month = int(df_days.iloc[0]['day'].month)
     current_year = int(df_days.iloc[0]['day'].year)
     current_year_array = []
-    while current_year != last_year or current_month-1 != last_month:
+    while current_year < last_year or current_month-1 != last_month:
         date_string = str(current_year) + "-" + str(current_month)
         
         monthly_perf = (df_days.loc[date_string]['wallet'].iloc[-1] - df_days.loc[date_string]['wallet'].iloc[0]) / df_days.loc[date_string]['wallet'].iloc[0]
@@ -285,6 +285,8 @@ def plot_bar_by_month(df_days):
         
         current_month += 1
         if current_month > 12:
+            if current_year == last_year:
+                break
             current_month = 1
             current_year += 1
 
