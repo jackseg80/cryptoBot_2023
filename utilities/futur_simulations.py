@@ -49,11 +49,15 @@ def plot_train_test_simulation(df_trades, train_test_date, trades_multiplier, nu
     sns.set_style("darkgrid")
     sns.set(rc={'figure.figsize':(17,8)})
     plt.title("Courbe de surapprentissage sur " + str(number_of_simulations) + " scénarios différents")
+
+    # Séparation entre ensemble d'entraînement et de test
     df_train = df_trades.loc[df_trades["close_date"]<train_test_date]
     df_test = df_trades.loc[df_trades["close_date"]>=train_test_date]
+
+    # Initialisation des paramètres
     trades_to_forecast = len(df_test)
     inital_wallet = df_train.iloc[-1]['wallet']
-    trades_to_show = len(df_test)*2
+    trades_to_show = len(df_test)
     time_list = list(df_test["close_date"])
     trades_pool = list(df_train["trade_result_pct_wallet"] + 1) * trades_multiplier
     true_trades_date = list(df_train.iloc[-trades_to_show:]["close_date"])
@@ -61,6 +65,8 @@ def plot_train_test_simulation(df_trades, train_test_date, trades_multiplier, nu
     mu, sigma = 0, df_trades["trade_result_pct_wallet"].std() # mean and standard deviation
     simulations = {}
     result_simulation = []
+    
+    # Simulation de surapprentissage
     for i in range(number_of_simulations):
         current_trades_pool = random.sample(trades_pool, trades_to_forecast)
         noise_result = np.random.normal(mu, sigma, len(current_trades_pool))
@@ -70,6 +76,8 @@ def plot_train_test_simulation(df_trades, train_test_date, trades_multiplier, nu
         simulated_wallet = [x*inital_wallet for x in current_trades_result]
         result_simulation.append({"key": i, "result": simulated_wallet[-1]})
         simulations[i] =  simulated_wallet
+    
+    # Affichage des résultats de simulation
     sorted_simul_result = sorted(result_simulation, key=lambda d: d['result']) 
     for i in range(10):
         index_to_show = i*int(len(sorted_simul_result)/9)

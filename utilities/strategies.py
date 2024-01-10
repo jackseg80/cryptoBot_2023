@@ -1,6 +1,6 @@
 # Classes des différentes stratégies de trading
 import sys
-sys.path.append('..')
+sys.path.append('./')
 from utilities.custom_indicators import get_n_columns
 from utilities.backtesting import get_metrics
 from utilities.custom_indicators import SuperTrend
@@ -10,6 +10,7 @@ pd.options.mode.chained_assignment = None  # default='warn'
 import ta
 import numpy as np
 import copy
+
 
 class BolTrendV1():
     def __init__(
